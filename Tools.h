@@ -3,6 +3,8 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include<vector>
+#include<opencv2/opencv.hpp>
 #define min(a,b) a<b?a:b
 #define max(a,b) a>b?a:b
 std::string int_to_string(int num){
@@ -22,5 +24,26 @@ double abs_diff(cv::Mat mat1,cv::Mat mat2){
     }
     return diff;
 }
+
+//@note 本结构体比较为坐标位置横坐标比较
+struct block{
+    int num;
+    cv::Point place;
+    bool operator<(const block b)const{
+        return this->place.x<b.place.x;
+    }
+    operator int(){return num;}
+    operator cv::Point(){return place;}
+    block(int num_,cv::Point point_):num(num_),place(point_){};
+    block():num(0),place(cv::Point (0,0)){};
+};
+
+struct block_node{
+    std::vector<block> data;
+    block_node* next=NULL;
+    block_node(int num,cv::Point point){
+        data.push_back(block(num,point));
+    }
+};
 
 #endif //RM_LINKGAME_TOOLS_H
